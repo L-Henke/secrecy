@@ -50,7 +50,6 @@ import android.widget.ViewAnimator;
 import com.doplgangr.secrecy.Config;
 import com.doplgangr.secrecy.CustomApp;
 import com.doplgangr.secrecy.Events.BackUpDoneEvent;
-import com.doplgangr.secrecy.Events.BackingUpFileEvent;
 import com.doplgangr.secrecy.Events.NewFileEvent;
 import com.doplgangr.secrecy.FileSystem.Encryption.Vault;
 import com.doplgangr.secrecy.FileSystem.Files.EncryptedFile;
@@ -507,11 +506,13 @@ public class FilesListFragment extends FileViewer {
     public void onEventMainThread(BackUpDoneEvent event) {
         if (!event.backupPath.getAbsolutePath().equals(secret.getPath()))
             return;
-        mBuilder.setProgress(0, 0, false)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(    //For long long text
-                        String.format(CustomApp.context.getString(R.string.Backup__finish), event.backupFile)))
-                .setOngoing(false);
-        mNotifyManager.notify(NotificationID, mBuilder.build());
+        if (mBuilder != null) {
+            mBuilder.setProgress(0, 0, false)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(    //For long long text
+                            String.format(CustomApp.context.getString(R.string.Backup__finish), event.backupFile)))
+                    .setOngoing(false);
+            mNotifyManager.notify(NotificationID, mBuilder.build());
+        }
     }
 
     @OptionsItem(R.id.action_delete_vault)
