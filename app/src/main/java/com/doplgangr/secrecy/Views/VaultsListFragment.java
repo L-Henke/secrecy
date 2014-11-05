@@ -22,8 +22,8 @@ package com.doplgangr.secrecy.Views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -65,7 +65,6 @@ import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -114,7 +113,8 @@ public class VaultsListFragment extends Fragment {
         VaultHolder.getInstance().clear();
         if (mLinearView != null)
             mLinearView.removeAllViews();
-        context.getSupportActionBar().setTitle(R.string.App__name);
+        if (context.getSupportActionBar() != null)
+            context.getSupportActionBar().setTitle(R.string.App__name);
         java.io.File root = Storage.getRoot();
         if (!Util.canWrite(root)) {
             Util.alert(CustomApp.context,
