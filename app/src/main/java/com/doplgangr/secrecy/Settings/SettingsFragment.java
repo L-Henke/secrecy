@@ -89,6 +89,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         Resources res = getResources();
 
         stealth_mode_message = getString(R.string.Settings__stealth_mode_message);
