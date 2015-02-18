@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -45,9 +46,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.doplgangr.secrecy.CustomApp_;
 import com.doplgangr.secrecy.FileSystem.Storage;
-import com.doplgangr.secrecy.Premium.PremiumFragment_;
 import com.doplgangr.secrecy.Premium.PremiumStateHelper;
 import com.doplgangr.secrecy.Premium.StealthMode;
 import com.doplgangr.secrecy.R;
@@ -57,53 +56,52 @@ import com.doplgangr.secrecy.Views.VaultsListFragment;
 import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.res.StringArrayRes;
-import org.androidannotations.annotations.res.StringRes;
-import org.androidannotations.annotations.sharedpreferences.Pref;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-@EFragment
-public class SettingsFragment extends PreferenceFragment
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
-    static final String TAG = "PREFERENCEFRAGMENT";
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int REQUEST_CODE = 6384; // onActivityResult request code
     private static final int REQUEST_CODE_2 = 2058; // onActivityResult request code
     private static final ArrayList<String> INCLUDE_EXTENSIONS_LIST = new ArrayList<String>();
     private ActionBarActivity context = null;
-    @StringRes(R.string.Settings__stealth_mode_message)
-    String stealth_mode_message;
-    @StringArrayRes(R.array.Credits__names)
-    String[] creditsNames;
-    @StringArrayRes(R.array.Credits__description)
-    String[] creditsDescription;
-    @StringArrayRes(R.array.Credits__links)
-    String[] creditsLinks;
-    @StringArrayRes(R.array.Contributor__names)
-    String[] contributorNames;
-    @StringArrayRes(R.array.Contributor__description)
-    String[] contributorDescription;
-    @StringArrayRes(R.array.Contributor__links)
-    String[] contributorLinks;
+    private String stealth_mode_message;
+    private String[] creditsNames;
+    private String[] creditsDescription;
+    private String[] creditsLinks;
+    private String[] contributorNames;
+    private String[] contributorDescription;
+    private String[] contributorLinks;
+
+    private String alert;
+    private String libraries;
 
     static {
         INCLUDE_EXTENSIONS_LIST.add(".");
     }
 
-    @StringRes(R.string.Settings__changed_alert)
-    String alert;
-    @StringRes(R.string.Settings__libraries_message)
-    String libraries;
+
+
     @Pref
     Prefs_ Prefs;
     private VaultsListFragment.OnFragmentFinishListener mFinishListener;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        Resources res = getResources();
+
+        stealth_mode_message = getString(R.string.Settings__stealth_mode_message);
+        creditsNames = res.getStringArray(R.array.Credits__names);
+        creditsDescription = res.getStringArray(R.array.Credits__description);
+        creditsLinks = res.getStringArray(R.array.Credits__links);
+        contributorNames = res.getStringArray(R.array.Contributor__names);
+        contributorDescription = res.getStringArray(R.array.Contributor__description);
+        contributorLinks = res.getStringArray(R.array.Contributor__links);
+
+        alert = getString(R.string.Settings__changed_alert);
+        libraries = getString(R.string.Settings__libraries_message);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
