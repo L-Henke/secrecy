@@ -46,7 +46,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doplgangr.secrecy.CustomApp;
 import com.doplgangr.secrecy.FileSystem.Storage;
+import com.doplgangr.secrecy.Premium.PremiumFragment;
 import com.doplgangr.secrecy.Premium.PremiumStateHelper;
 import com.doplgangr.secrecy.Premium.StealthMode;
 import com.doplgangr.secrecy.R;
@@ -80,8 +82,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     static {
         INCLUDE_EXTENSIONS_LIST.add(".");
     }
-
-
 
     @Pref
     Prefs_ Prefs;
@@ -135,7 +135,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @UiThread
     void update() {
         Preference pref = findPreference("version");
-        pref.setSummary(CustomApp_.VERSIONNAME);
+        pref.setSummary(CustomApp.VERSIONNAME);
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
         Preference dialogPreference = getPreferenceScreen().findPreference("legal");
@@ -330,7 +330,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 stealth_mode_password.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        mFinishListener.onNew(null, new PremiumFragment_());    //Switch fragment to donation
+                        mFinishListener.onNew(null, new PremiumFragment());    //Switch fragment to donation
                         return true;
                     }
                 });
