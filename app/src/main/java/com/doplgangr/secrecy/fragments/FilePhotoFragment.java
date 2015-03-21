@@ -1,7 +1,11 @@
 package com.doplgangr.secrecy.fragments;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -38,6 +42,7 @@ public class FilePhotoFragment extends FragmentActivity {
 
     private static Activity context;
     private ViewPager mViewPager;
+    private ScreenOffReceiver screenOffReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +75,18 @@ public class FilePhotoFragment extends FragmentActivity {
         if (itemNo < (mViewPager.getAdapter().getCount())) { //check if requested item is in bound
             mViewPager.setCurrentItem(itemNo);
         }
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
+        screenOffReceiver = new ScreenOffReceiver();
+        IntentFilter screenStateFilter = new IntentFilter();
+        screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(screenOffReceiver, screenStateFilter);
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        unregisterReceiver(screenOffReceiver);
     }
 
     public void onEventMainThread(ImageLoadDoneEvent event) {
@@ -114,6 +119,14 @@ public class FilePhotoFragment extends FragmentActivity {
                     null);
         }
         event.progressBar.setVisibility(View.GONE);
+    }
+
+    class ScreenOffReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
     }
 
     static class SamplePagerAdapter extends FragmentStatePagerAdapter {
